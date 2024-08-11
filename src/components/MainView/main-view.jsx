@@ -1,44 +1,68 @@
 import {
-    useState
+    useState,
+    useEffect
 } from 'react';
 import { MovieCard } from '../MovieCard/movie-card';
 import { MovieView } from '../MovieView/movie-view';
+import { LoginView } from '../LoginView/login-view';
+import { SignupView } from '../SignupView/signup-view';
 
 export const MainView = () => {
-    const [movies, setMovies] = useState([
-        {
-            id: 1,
-            title: 'Inception',
-            genre: 'Science Fiction',
-            director: 'Christopher Nolan',
-            description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-            imagePath: 'https://assets.cdn.moviepilot.de/files/3f60270d14db43f3bb991f45f0f645e136913a3d775d577cd4e6cc052cb2/limit/1600/900/1-1.jpg'
-        },
-        {
-            id: 2,
-            title: 'Silence of the Lambs',
-            genre: 'Thriller',
-            director: 'Jonathan Demme',
-            description: 'A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer.',
-            imagePath: 'https://upload.wikimedia.org/wikipedia/en/8/86/The_Silence_of_the_Lambs_poster.jpg'
-        },
-        {
-            id: 3,
-            title: 'The Dark Knight',
-            genre: 'Action',
-            director: 'Christopher Nolan',
-            description: 'When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.',
-            imagePath: 'https://m.media-amazon.com/images/M/MV5BM2VmMGQ1OTUtMjUyNS00NWFhLTliMzktZTljNDQ0OTQxOTQ4XkEyXkFqcGdeQXVyMTM4NTI3OTI@._V1_FMjpg_UX1000_.jpg'
-        }
-    ]);
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const storedToken = localStorage.getItem('token');
+    const [user, setUser] = useState(storedUser ? storedUser : null);
+    const [token, setToken] = useState(storedToken ? storedToken : null);
+    const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
+
+    useEffect(() => {
+        //I dont need authorization for GET /movies, because I want GET /movies to be a public endpoint, but it's part of the exercise.
+        fetch('https://oles-myflix-810b16f7a5af.herokuapp.com/movies', { headers: { Authorization: `Bearer ${token}` }})
+            .then(response => response.json())
+            .then(data => setMovies(data))
+            .catch(error => console.error(error));
+    }, [token]);
+
+    if (!user) {
+        return (
+            <div className="container">
+                <div className='row'>
+                    <div className='col-xs-12 col-md-6'>
+                        <LoginView onLoggedIn={(logedinuser, usertoken) => {
+                            setUser(logedinuser);
+                            setToken(usertoken);
+                        }} />
+                    </div>
+                    <div className='col-xs-12 col-md-6'>
+                        <SignupView onSignedUp={(signedUpUser, userToken) => {
+                            setUser(signedUpUser);
+                            setToken(userToken);
+                        }} />
+                    </div>
+                </div>
+            </div>
+        );
+    };
     if (selectedMovie) return <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />;
     if (movies.length === 0) {
         return <div className="main-view">The list is empty!</div>;
     }
     return (
-        <div  className="main-view">
-            {movies.map(movie => <MovieCard key={movie.id} movie={movie} onClick={(select) => {setSelectedMovie(select)}} />)}
+        <div className="container overflow-hidden text-center">
+            <div className="row justify-content-center">
+                {movies.map(movie => (
+                    <div className="col-xs-12 col-md-6 col-lg-4 col-xl-3 g-md-4 d-flex align-items-stretch">
+                        <MovieCard className="" key={movie._id} movie={movie} onClick={(select) => { setSelectedMovie(select) }} />
+                    </div>
+                ))}
+                <div className="col-12 mt-3">
+                    <button className="btn btn-primary" onClick={() => {
+                        setUser(null);
+                        setToken(null);
+                        localStorage.clear();
+                    }}>Logout</button>
+                </div>
+            </div>
         </div>
     );
 };
