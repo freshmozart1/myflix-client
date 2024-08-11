@@ -38,18 +38,26 @@ export const SignupView = ({ onSignedUp }) => {
         .catch(e => console.error('Error signing up: ' + e));
     };
 
-    return(
+    return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="signup_username">Username: <sup>*</sup></label>
-            <input type="text" id="signup_username" value={username} onChange={e => setUsername(e.target.value)} minLength="5" required />
-            <label htmlFor="signup_password">Password: <sup>*</sup></label>
-            <input type="password" id="signup_password" value={password} onChange={e => setPassword(e.target.value)} minLength="8" required />
-            <label htmlFor="signup_email">Email: <sup>*</sup></label>
-            <input type="email" id="signup_email" value={email} onChange={e => setEmail(e.target.value)} required />
-            <label htmlFor="signup_birthday">Birthday:</label>
-            <input type="date" id="signup_birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
-            <button type="submit">Submit</button>
-            <p>Fields marked with a <sup>*</sup> are required.</p>
+            <div className="form-group">
+                <label htmlFor="signup_username">Username <sup>*</sup></label>
+                <input type="text" className="form-control" id="signup_username" value={username} onChange={e => setUsername(e.target.value)} minLength="5" required />
+            </div>
+            <div className="form-group">
+                <label htmlFor="signup_password">Password <sup>*</sup></label>
+                <input type="password" className="form-control" id="signup_password" value={password} onChange={e => setPassword(e.target.value)} minLength="8" required />
+            </div>
+            <div className="form-group">
+                <label htmlFor="signup_email">Email <sup>*</sup></label>
+                <input type="email" className="form-control" id="signup_email" value={email} onChange={e => setEmail(e.target.value)} required />
+            </div>
+            <div className="form-group">
+                <label htmlFor="signup_birthday">Birthday</label>
+                <input type="date" className="form-control" id="signup_birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
+            </div>
+            <small>Fields marked with a <sup>*</sup> are required.</small><br />
+            <button type="submit" className="btn btn-secondary">Submit</button>
         </form>
     );
 };

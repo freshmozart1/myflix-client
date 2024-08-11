@@ -25,17 +25,22 @@ export const MainView = () => {
 
     if (!user) {
         return (
-            <>
-                <LoginView onLoggedIn={(logedinuser, usertoken) => {
-                    setUser(logedinuser);
-                    setToken(usertoken);
-                }} />
-                or
-                <SignupView onSignedUp={(signedUpUser, userToken) => {
-                    setUser(signedUpUser);
-                    setToken(userToken);
-                }} />
-            </>
+            <div className="container">
+                <div className='row'>
+                    <div className='col-xs-12 col-md-6'>
+                        <LoginView onLoggedIn={(logedinuser, usertoken) => {
+                            setUser(logedinuser);
+                            setToken(usertoken);
+                        }} />
+                    </div>
+                    <div className='col-xs-12 col-md-6'>
+                        <SignupView onSignedUp={(signedUpUser, userToken) => {
+                            setUser(signedUpUser);
+                            setToken(userToken);
+                        }} />
+                    </div>
+                </div>
+            </div>
         );
     };
     if (selectedMovie) return <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />;
