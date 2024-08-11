@@ -42,11 +42,11 @@ export const SignupView = ({ onSignedUp }) => {
         <form onSubmit={handleSubmit}>
             <div className="form-group">
                 <label htmlFor="signup_username">Username <sup>*</sup></label>
-                <input type="text" className="form-control" id="signup_username" value={username} onChange={e => setUsername(e.target.value)} minLength="5" required />
+                <input type="text" className="form-control" id="signup_username" value={username} onChange={e => setUsername(e.target.value)} minLength={process.env.USERNAME_LENGTH} required />
             </div>
             <div className="form-group">
                 <label htmlFor="signup_password">Password <sup>*</sup></label>
-                <input type="password" className="form-control" id="signup_password" value={password} onChange={e => setPassword(e.target.value)} minLength="8" required />
+                <input type="password" className="form-control" id="signup_password" value={password} onChange={e => setPassword(e.target.value)} minLength={process.env.PASSWORD_LENGTH} required />
             </div>
             <div className="form-group">
                 <label htmlFor="signup_email">Email <sup>*</sup></label>
