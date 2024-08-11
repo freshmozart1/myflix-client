@@ -43,13 +43,21 @@ export const MainView = () => {
         return <div className="main-view">The list is empty!</div>;
     }
     return (
-        <div  className="main-view">
-            {movies.map(movie => <MovieCard key={movie._id} movie={movie} onClick={(select) => { setSelectedMovie(select) }} />)}
-            <button onClick={() => {
-                setUser(null);
-                setToken(null);
-                localStorage.clear();
-            }}>Logout</button>
+        <div className="container overflow-hidden text-center">
+            <div className="row justify-content-center">
+                {movies.map(movie => (
+                    <div className="col-xs-12 col-md-6 col-lg-4 col-xl-3 g-md-4 d-flex align-items-stretch">
+                        <MovieCard className="" key={movie._id} movie={movie} onClick={(select) => { setSelectedMovie(select) }} />
+                    </div>
+                ))}
+                <div className="col-12 mt-3">
+                    <button className="btn btn-primary" onClick={() => {
+                        setUser(null);
+                        setToken(null);
+                        localStorage.clear();
+                    }}>Logout</button>
+                </div>
+            </div>
         </div>
     );
 };
