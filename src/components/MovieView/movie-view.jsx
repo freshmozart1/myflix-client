@@ -1,36 +1,41 @@
 import PropTypes from 'prop-types';
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+
 export const MovieView = ({ movie, onBackClick }) => {
     return (
-        <div className='container'>
-            <div className='row'>
-                <div className='col-xs-12 col-md-6'>
-                    <div className='row align-items-center'>
-                        <div className='col-auto'>
-                            <button className='btn btn-secondary' onClick={onBackClick}>{'\u003c'}</button>
-                        </div>
-                        <div className='col'>
+        <Container>
+            <Row>
+                <Col xs={12} md={6}>
+                    <Row className='align-items-center'>
+                        <Col xs='auto'>
+                            <Button variant='secondary' onClick={onBackClick}>{'\u003c'}</Button>
+                        </Col>
+                        <Col>
                             <h1>{movie.title}</h1>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col'>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
                             <div className='value'>{movie.genre.name}</div>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-auto'>Director:</div>
-                        <div className='col'>{movie.director.name}</div>
-                    </div>
-                    <div className='row'>
-                        <div className='col'>{movie.description}</div>
-                    </div>
-                </div>
-                <div className='col-xs-12 col-md-6'>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs='auto'>Director:</Col>
+                        <Col>{movie.director.name}</Col>
+                    </Row>
+                    <Row>
+                        <Col>{movie.description}</Col>
+                    </Row>
+                </Col>
+                <Col xs={12} md={6}>
                     <img src={movie.imagePath} alt="Movie poster" />
-                </div>
-            </div>
-        </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
 
 export const SignupView = ({ onSignedUp }) => { 
     const [username, setUsername] = useState('');
@@ -39,25 +41,25 @@ export const SignupView = ({ onSignedUp }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="signup_username">Username <sup>*</sup></label>
-                <input type="text" className="form-control" id="signup_username" value={username} onChange={e => setUsername(e.target.value)} minLength={process.env.USERNAME_LENGTH} required />
-            </div>
-            <div className="form-group">
-                <label htmlFor="signup_password">Password <sup>*</sup></label>
-                <input type="password" className="form-control" id="signup_password" value={password} onChange={e => setPassword(e.target.value)} minLength={process.env.PASSWORD_LENGTH} required />
-            </div>
-            <div className="form-group">
-                <label htmlFor="signup_email">Email <sup>*</sup></label>
-                <input type="email" className="form-control" id="signup_email" value={email} onChange={e => setEmail(e.target.value)} required />
-            </div>
-            <div className="form-group">
-                <label htmlFor="signup_birthday">Birthday</label>
-                <input type="date" className="form-control" id="signup_birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
-            </div>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="signup_username">
+                <Form.Label>Username <sup>*</sup></Form.Label>
+                <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} minLength={process.env.USERNAME_LENGTH} required />
+            </Form.Group>
+            <Form.Group controlId="signup_password">
+                <Form.Label>Password <sup>*</sup></Form.Label>
+                <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} minLength={process.env.PASSWORD_LENGTH} required />
+            </Form.Group>
+            <Form.Group controlId="signup_email">
+                <Form.Label>Email <sup>*</sup></Form.Label>
+                <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+            </Form.Group>
+            <Form.Group controlId="signup_birthday">
+                <Form.Label>Birthday</Form.Label>
+                <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
+            </Form.Group>
             <small>Fields marked with a <sup>*</sup> are required.</small><br />
-            <button type="submit" className="btn btn-secondary">Submit</button>
-        </form>
+            <Button variant="secondary" type="submit">Submit</Button>
+        </Form>
     );
 };
