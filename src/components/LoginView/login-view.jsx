@@ -1,5 +1,9 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
+
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
+
 import './login-view.scss';
 
 export const LoginView = ({ onLoggedIn }) => {
@@ -32,18 +36,33 @@ export const LoginView = ({ onLoggedIn }) => {
         };
     
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="login_username">Username</label>
-                <input type="text" className="form-control" id="login_username" value={username} onChange={(e) => { setUsername(e.target.value) }} minLength={process.env.USERNAME_LENGTH} required />
-            </div>
-            <div className="form-group">
-                <label htmlFor="login_password">Password</label>
-                <input type="password" className="form-control" id="login_password" value={password} onChange={(e) => { setPassword(e.target.value) }} minLength={process.env.PASSWORD_LENGTH} required />
-            </div>
-            <small className="error">{errorMessage}</small><br />
-            <button type="submit" className="btn btn-primary">Submit</button>
-        </form>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="login_username">
+                <Form.Label>Username</Form.Label>
+                <Form.Control 
+                    type="text" 
+                    value={username} 
+                    onChange={(e) => setUsername(e.target.value)} 
+                    minLength={process.env.USERNAME_LENGTH} 
+                    required 
+                />
+            </Form.Group>
+            <Form.Group controlId="login_password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control 
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    minLength={process.env.PASSWORD_LENGTH} 
+                    required 
+                />
+            </Form.Group>
+            {errorMessage && <small className="error">{errorMessage}</small>}
+            <br />
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+        </Form>
     );
 };
 

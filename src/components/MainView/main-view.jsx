@@ -2,6 +2,12 @@ import {
     useState,
     useEffect
 } from 'react';
+
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+
 import { MovieCard } from '../MovieCard/movie-card';
 import { MovieView } from '../MovieView/movie-view';
 import { LoginView } from '../LoginView/login-view';
@@ -25,22 +31,22 @@ export const MainView = () => {
 
     if (!user) {
         return (
-            <div className="container">
-                <div className='row'>
-                    <div className='col-xs-12 col-md-6'>
+            <Container>
+                <Row>
+                    <Col xs={12} md={6}>
                         <LoginView onLoggedIn={(logedinuser, usertoken) => {
                             setUser(logedinuser);
                             setToken(usertoken);
                         }} />
-                    </div>
-                    <div className='col-xs-12 col-md-6'>
+                    </Col>
+                    <Col xs={12} md={6}>
                         <SignupView onSignedUp={(signedUpUser, userToken) => {
                             setUser(signedUpUser);
                             setToken(userToken);
                         }} />
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         );
     };
     if (selectedMovie) return <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />;
@@ -48,21 +54,21 @@ export const MainView = () => {
         return <div className="main-view">The list is empty!</div>;
     }
     return (
-        <div className="container overflow-hidden text-center">
-            <div className="row justify-content-center">
+        <Container className="overflow-hidden text-center">
+            <Row className="justify-content-center">
                 {movies.map(movie => (
-                    <div className="col-xs-12 col-md-6 col-lg-4 col-xl-3 g-md-4 d-flex align-items-stretch">
-                        <MovieCard className="" key={movie._id} movie={movie} onClick={(select) => { setSelectedMovie(select) }} />
-                    </div>
+                    <Col xs={12} md={6} lg={4} xl={3} className="g-md-4 d-flex align-items-stretch">
+                        <MovieCard key={movie._id} movie={movie} onClick={(select) => { setSelectedMovie(select) }} />
+                    </Col>
                 ))}
-                <div className="col-12 mt-3">
-                    <button className="btn btn-primary" onClick={() => {
+                <Col xs={12} className="mt-3">
+                    <Button variant="primary" onClick={() => {
                         setUser(null);
                         setToken(null);
                         localStorage.clear();
-                    }}>Logout</button>
-                </div>
-            </div>
-        </div>
+                    }}>Logout</Button>
+                </Col>
+            </Row>
+        </Container>
     );
 };
