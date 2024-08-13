@@ -3,6 +3,7 @@ import { MainView } from "./components/MainView/main-view";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from 'react';
 import { MovieList } from "./components/MovieList/movie-list";
+import { MovieView } from "./components/MovieView/movie-view";
 
 import './index.scss';
 
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
         path: '/',
         element: <MainView />,
         children: [
-            { index: true, element: <MovieList /> }
+            { index: true, element: <MovieList /> },
+            { path: 'movies/:title', element: <MovieView /> }
         ]
     }
 ]);
