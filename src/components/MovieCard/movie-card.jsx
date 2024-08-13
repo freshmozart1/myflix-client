@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import Card  from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card';
 import './movie-card.scss';
 
-export const MovieCard = ({ movie, onClick, className }) => {
+export const MovieCard = ({ movie, onClick }) => {
     return (
-        <Card className={className} onClick={() => onClick(movie)}>
+        <Card onClick={onClick}>
             <Card.Img variant='top' src={'.' + movie.imagePath} />
             <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
