@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
+import { Row, Col, Container, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 import { MovieCard } from '../MovieCard/movie-card';
@@ -23,7 +19,9 @@ export const MovieList = (props) => {
     }, [props.movies]);
 
     return movies.length === 0 ? (
-        <div className='main-view'>Loading movies...</div>
+        <Container className="loading_container">
+            <Spinner animation="border" role="status" aria-label='Loading movie' />
+        </Container>
     ) : (
         <Row className='justify-content-center'>
             {movies.map((movie) => (
