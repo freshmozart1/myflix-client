@@ -42,7 +42,7 @@ export const MainView = () => {
         );
     };*/
     return (
-        <Container className="overflow-hidden text-center">
+        <Container className="overflow-hidden">
             <Outlet />
         </Container>
     );
