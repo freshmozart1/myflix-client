@@ -2,18 +2,13 @@ import { createRoot } from "react-dom/client";
 import { MainView } from "./components/MainView/main-view";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from 'react';
+
 import { MovieList } from "./components/MovieList/movie-list";
 import { MovieView } from "./components/MovieView/movie-view";
 
 import './index.scss';
-
-/*const MyFlixApplication = () => {
-    return (
-        <MainView />
-    );
-};
-
-createRoot(document.querySelector('#root')).render(<MyFlixApplication />);*/
+import { LoginView } from "./components/LoginView/login-view";
+import { AuthProvider } from "./components/AuthProvider/auth-provider";
 
 const router = createBrowserRouter([
     {
@@ -21,13 +16,16 @@ const router = createBrowserRouter([
         element: <MainView />,
         children: [
             { index: true, element: <MovieList /> },
-            { path: 'movies/:title', element: <MovieView /> }
+            { path: 'movies/:title', element: <MovieView /> },
+            { path: 'login', element: <LoginView /> }
         ]
     }
 ]);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
     </StrictMode>
 );
