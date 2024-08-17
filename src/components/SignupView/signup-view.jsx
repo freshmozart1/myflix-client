@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
+import process from 'process';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../AuthProvider/auth-provider";
 
-export const SignupView = ({ onSignedUp }) => { 
+export const SignupView = () => { 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
+    const { setToken, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -23,9 +28,9 @@ export const SignupView = ({ onSignedUp }) => {
                 }).then(loginResponse => {
                     if (loginResponse.ok) {
                         loginResponse.json().then(res => {
-                            localStorage.setItem('user', JSON.stringify(res.user));
-                            localStorage.setItem('token', res.token);
-                            onSignedUp(res.user, res.token);
+                            setToken(res.token);
+                            setUser(res.user);
+                            navigate('/');
                         })
                         .catch(e => console.error('Couldn\'t convert response to JSON: ' +e ));
                     } else {
