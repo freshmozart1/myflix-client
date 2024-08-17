@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     }, [token, user]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, user, setUser }}>
+        <AuthContext.Provider value={{ token, setToken, user: JSON.parse(user), setUser: (newUser) => setUser(JSON.stringify(newUser)) }}>
             {children}
         </AuthContext.Provider>
     );
