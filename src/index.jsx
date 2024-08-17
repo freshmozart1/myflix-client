@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 
 import { MovieList } from "./components/MovieList/movie-list";
 import { MovieView } from "./components/MovieView/movie-view";
+import { SignupView } from "./components/SignupView/signup-view";
 
 import './index.scss';
 import { LoginView } from "./components/LoginView/login-view";
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <MovieList /> },
             { path: 'movies/:title', element: <MovieView /> },
-            { path: 'login', element: <LoginView /> }
+            { path: 'login', element: <LoginView /> },
+            { path: 'signup', element: <SignupView /> }
         ]
     }
 ]);
