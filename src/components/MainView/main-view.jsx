@@ -1,49 +1,50 @@
-/*import {
-    useState,
-    useEffect
-} from 'react';*/
-
 import { Outlet } from 'react-router-dom';
-
+import { AuthContext } from "../AuthProvider/auth-provider";
 import Container from 'react-bootstrap/Container';
+import { Col, Row } from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { useContext } from 'react';
+
 
 export const MainView = () => {
-    /*const storedUser = JSON.parse(localStorage.getItem('user'));
-    const storedToken = localStorage.getItem('token');
-    const [user, setUser] = useState(storedUser ? storedUser : null);
-    const [token, setToken] = useState(storedToken ? storedToken : null);
-
-   useEffect(() => {
-        I dont need authorization for GET /movies, because I want GET /movies to be a public endpoint, but it's part of the exercise.
-        fetch('https://oles-myflix-810b16f7a5af.herokuapp.com/movies', { headers: { Authorization: `Bearer ${token}` }})
-            .then(response => response.json())
-            .then(data => setMovies(data))
-            .catch(error => console.error(error));
-    }, [token]);
-
-    if (!user) {
-        return (
-            <Container>
-                <Row>
-                    <Col xs={12} md={6}>
-                        <LoginView onLoggedIn={(logedinuser, usertoken) => {
-                            setUser(logedinuser);
-                            setToken(usertoken);
-                        }} />
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <SignupView onSignedUp={(signedUpUser, userToken) => {
-                            setUser(signedUpUser);
-                            setToken(userToken);
-                        }} />
-                    </Col>
-                </Row>
-            </Container>
-        );
-    };*/
+    const { user, setUser, setToken } = useContext(AuthContext);
     return (
         <Container className="overflow-hidden">
-            <Outlet />
+            <Row>
+                <Col xs={12}>
+                <Navbar expand="lg" className="bg-body-tertiary">
+                        <Container>
+                            <Navbar.Brand>myFlix</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="me-auto">
+                                    <Nav.Link href="/">Movies</Nav.Link>
+                                    {user ?
+                                        <>
+                                            <Nav.Link href={'users/' + user.username + '/favourites'}>Favourites</Nav.Link>
+                                            <Nav.Link href={'users/' + user.username}>{user.username}</Nav.Link>
+                                            <Nav.Link onClick={(event) => {
+                                                event.preventDefault();
+                                                setUser(null);
+                                                setToken(null);
+                                            }}>Logout</Nav.Link>
+                                        </>
+                                        :
+                                        <>
+                                            <Nav.Link href="/login">Login</Nav.Link>
+                                            <Nav.Link href="/signup">Signup</Nav.Link>
+                                        </>
+                                    }
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Container>
+                    </Navbar>
+                </Col>
+                <Col xs={12}>
+                    <Outlet />
+                </Col>
+            </Row>
         </Container>
     );
 };
