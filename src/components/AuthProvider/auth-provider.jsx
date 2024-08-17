@@ -9,16 +9,26 @@ export const AuthProvider = ({ children }) => {
         return _token ? _token : null;
     });
 
+    const [user, setUser] = useState(() => {
+        const _user = localStorage.getItem('user');
+        return _user ? _user : null;
+    });
+
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token');
-         }
-    }, [token]);
+        }
+        if (user) {
+            localStorage.setItem('user', user);
+        } else {
+            localStorage.removeItem('user');
+        }
+    }, [token, user]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken }}>
+        <AuthContext.Provider value={{ token, setToken, user, setUser }}>
             {children}
         </AuthContext.Provider>
     );

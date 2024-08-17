@@ -11,7 +11,7 @@ export const LoginView = () => {
     const [username, setUsername] = useState(''),
         [password, setPassword] = useState(''),
         [errorMessage, setErrorMessage] = useState(''),
-        { setToken } = useContext(AuthContext),
+        { setToken, setUser } = useContext(AuthContext),
         navigate = useNavigate(),
         handleSubmit = (event) => {
             event.preventDefault();
@@ -21,6 +21,7 @@ export const LoginView = () => {
                 if (res.ok) {
                     res.json().then(res_ok => {
                         setToken(res_ok.token);
+                        setUser(res_ok.user);
                         navigate('/');
                     })
                         .catch(e => console.error('Couldn\'t convert response to JSON: ' + e));
