@@ -14,6 +14,13 @@ export const AuthProvider = ({ children }) => {
         return _user ? _user : null;
     });
 
+    const _setUser = (newUser) => {
+        if (newUser) {
+            setUser(JSON.stringify(newUser));
+        } else {
+            setUser(null);
+        }
+    };
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
@@ -28,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     }, [token, user]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, user: JSON.parse(user), setUser: (newUser) => setUser(JSON.stringify(newUser)) }}>
+        <AuthContext.Provider value={{ token, setToken, user: JSON.parse(user), setUser: _setUser }}>
             {children}
         </AuthContext.Provider>
     );
