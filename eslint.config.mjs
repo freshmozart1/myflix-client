@@ -7,7 +7,10 @@ export default [
     { files: ["**/*.{js,mjs,cjs,jsx}"] },
     {
         languageOptions: {
-            globals: { ...globals.browser }
+            globals: {
+                ...globals.browser,
+                ...globals.node
+            }
         }
     },
     pluginJs.configs.recommended,

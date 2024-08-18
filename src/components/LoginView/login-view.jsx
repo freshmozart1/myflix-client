@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
-import process from 'process';
 
 import './login-view.scss';
 import { AuthContext } from "../AuthProvider/auth-provider";
