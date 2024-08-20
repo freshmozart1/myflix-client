@@ -6,6 +6,7 @@ import { StrictMode } from 'react';
 import { MovieList } from "./components/MovieList/movie-list";
 import { MovieView } from "./components/MovieView/movie-view";
 import { SignupView } from "./components/SignupView/signup-view";
+import { ProfileView } from "./components/ProfileView/profile-view";
 
 import './index.scss';
 import { LoginView } from "./components/LoginView/login-view";
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
             { path: 'movies/:title', element: <MovieView /> },
             { path: 'login', element: <LoginView /> },
             { path: 'signup', element: <SignupView /> },
-            { path: 'users/:username', element: <div>Profile</div> },
+            { path: 'users/:username', element: <ProfileView /> }, //:username is not used in ProfileView
             { path: 'users/:username/favourites', element: <div>Favourites</div> }
         ]
     }
