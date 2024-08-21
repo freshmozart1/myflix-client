@@ -1,13 +1,22 @@
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import './movie-card.scss';
+import { RippleButton } from '../RippleButton/ripple-button';
 
 export const MovieCard = ({ movie, onClick }) => {
     return (
-        <Card onClick={onClick}>
-            <Card.Img variant='top' src={'.' + movie.imagePath} />
-            <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
+        <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
+            <Card.Img className="z-0 position-relative" variant="top" src={'.' + movie.imagePath} />
+            <Card.Body className="z-0 position-relative">
+                <div style={{float: 'right', width: '50px', height: '9px'}}/>
+                <Card.Title className='movieTitle'>
+                    {movie.title}
+                </Card.Title>
+                <RippleButton className="favouriteButton" onClick={(e) => {
+                    e.stopPropagation();
+                }} rippleColor={(() => getComputedStyle(document.documentElement).getPropertyValue('--bs-yellow').trim())()}>
+                    <i className="bi bi-star"></i>
+                </RippleButton>
                 <Card.Text>{movie.description}</Card.Text>
             </Card.Body>
         </Card>
