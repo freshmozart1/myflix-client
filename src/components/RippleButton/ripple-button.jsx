@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import './ripple-button.scss';
 
 
-export const RippleButton = ({ children, className, rippleColor, ...props }) => {
+export const RippleButton = ({ children, className, rippleColor, onClick, ...props }) => {
     const createRipple = (event) => {
         const button = event.currentTarget;
         const rect = button.getBoundingClientRect();
@@ -22,12 +22,18 @@ export const RippleButton = ({ children, className, rippleColor, ...props }) => 
         button.appendChild(circle);
     }
     return (
-        <button type="button" className={classNames('ripple', className)} onClick={createRipple} {...props}>{children}</button>
+        <button type="button" className={classNames('ripple', className)} onClick={(e) => {
+            createRipple(e);
+            if (onClick) onClick(e);
+        }} {...props}>
+            {children}
+        </button>
     );
 };
 
 RippleButton.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    rippleColor: PropTypes.string.isRequired
+    rippleColor: PropTypes.string.isRequired,
+    onClick: PropTypes.func
 };
