@@ -10,7 +10,7 @@ import { useContext } from 'react';
 export const MainView = () => {
     const { user, setUser, setToken } = useContext(AuthContext);
     return (
-        <Container className="overflow-hidden">
+        <Container>
             <Row>
                 <Col xs={12}>
                 <Navbar expand="lg" className="bg-body-tertiary">
