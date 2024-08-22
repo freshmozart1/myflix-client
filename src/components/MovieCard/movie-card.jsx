@@ -8,7 +8,7 @@ import { AuthContext } from '../AuthProvider/auth-provider';
 export const MovieCard = ({ movie, onClick }) => {
     const { user, token, setUser } = useContext(AuthContext);
     const [isFavourite, setIsFavourite] = useState(() => {
-        if (user.favourites) return user.favourites.includes(movie._id);
+        if (user && user.favourites) return user.favourites.includes(movie._id);
         return false;
     });
     const patchFavourites = () => {
