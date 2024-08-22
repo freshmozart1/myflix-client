@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../AuthProvider/auth-provider";
 
-export const SignupView = ({ onSignedUp }) => { 
+export const SignupView = () => { 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
+    const { setToken, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://oles-myflix-810b16f7a5af.herokuapp.com/users', {
+        fetch(process.env.HEROKU + '/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -18,14 +22,14 @@ export const SignupView = ({ onSignedUp }) => {
             body: JSON.stringify({ username, password, email, birthday })
         }).then(signupResponse => {
             if (signupResponse.ok) {
-                fetch(`https://oles-myflix-810b16f7a5af.herokuapp.com/login?username=${username}&password=${password}`, { //This is redundant code. I will refactor it later.
+                fetch(`${process.env.HEROKU}/login?username=${username}&password=${password}`, {
                     method: 'POST'
                 }).then(loginResponse => {
                     if (loginResponse.ok) {
                         loginResponse.json().then(res => {
-                            localStorage.setItem('user', JSON.stringify(res.user));
-                            localStorage.setItem('token', res.token);
-                            onSignedUp(res.user, res.token);
+                            setToken(res.token);
+                            setUser(res.user);
+                            navigate('/');
                         })
                         .catch(e => console.error('Couldn\'t convert response to JSON: ' +e ));
                     } else {
