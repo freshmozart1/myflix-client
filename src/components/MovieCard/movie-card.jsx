@@ -37,7 +37,7 @@ export const MovieCard = ({ movie, onClick }) => {
     }
     return (
         <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
-            <Card.Img className="z-0 position-relative" variant="top" src={'.' + movie.imagePath} />
+            <Card.Img className="z-0 position-relative" variant="top" src={movie.imagePath} />
             <Card.Body className="z-0 position-relative">
                 <div style={{float: 'right', width: '50px', height: '9px'}}/>
                 <Card.Title className='movieTitle'>
