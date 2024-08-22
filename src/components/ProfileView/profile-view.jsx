@@ -8,6 +8,10 @@ import { MovieList } from '../MovieList/movie-list';
 
 export const ProfileView = () => {
     const { user, token, setUser, setToken } = useContext(AuthContext);
+    if (!user || !token) {
+        window.location.href = '/';
+        return;
+    }
     const [newUsername, setNewUsername] = useState({ value: user.username, valid: false, errorMessage: '' });
     const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
     const [newEmail, setNewEmail] = useState({ value: user.email, valid: false, errorMessage: '' });
