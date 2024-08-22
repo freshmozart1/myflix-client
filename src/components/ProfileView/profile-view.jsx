@@ -102,6 +102,26 @@ export const ProfileView = () => {
         }
     };
 
+    const deleteUser = () => {
+        fetch(`${process.env.HEROKU}/users/${user.username}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => {
+            if (response.ok) {
+                setUser(null);
+                setToken(null);
+                window.location.href = '/';
+                return;
+            } else {
+                response.json().then(error => {
+                    console.error('Error deleting user: ' + error.message);
+                });
+            }
+        });
+    };
+
     useEffect(() => fetchFavourites(), [user.favourites]);
 
     return (
@@ -228,6 +248,11 @@ export const ProfileView = () => {
                             <p>No favourites</p>
                         </Col>
                 }
+            </Row>
+            <Row>
+                <Col>
+                    <Button variant="danger" onClick={deleteUser}>Delete account</Button>
+                </Col>
             </Row>
         </Container>
     );
