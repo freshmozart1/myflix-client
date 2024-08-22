@@ -21,8 +21,7 @@ const router = createBrowserRouter([
             { path: 'movies/:title', element: <MovieView /> },
             { path: 'login', element: <LoginView /> },
             { path: 'signup', element: <SignupView /> },
-            { path: 'users/:username', element: <ProfileView /> }, //:username is not used in ProfileView
-            { path: 'users/:username/favourites', element: <div>Favourites</div> }
+            { path: 'users/:username', element: <ProfileView /> } //:username is not used in ProfileView
         ]
     }
 ]);

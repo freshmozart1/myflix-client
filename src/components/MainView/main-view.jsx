@@ -22,8 +22,7 @@ export const MainView = () => {
                                     <Nav.Link href="/">Movies</Nav.Link>
                                     {user ?
                                         <>
-                                            <Nav.Link href={'users/' + user.username + '/favourites'}>Favourites</Nav.Link>
-                                            <Nav.Link href={'users/' + user.username}>{user.username}</Nav.Link>
+                                            <Nav.Link href={'/users/' + user.username}>{user.username}</Nav.Link>
                                             <Nav.Link onClick={(event) => {
                                                 event.preventDefault();
                                                 setUser(null);
