@@ -5,10 +5,12 @@ import { Col, Row } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export const MainView = () => {
     const { user, setUser, setToken } = useContext(AuthContext);
+    const navigate = useNavigate();
     return (
         <Container>
             <Row>
@@ -27,6 +29,7 @@ export const MainView = () => {
                                                 event.preventDefault();
                                                 setUser(null);
                                                 setToken(null);
+                                                navigate('/');
                                             }}>Logout</Nav.Link>
                                         </>
                                         :
