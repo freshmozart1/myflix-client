@@ -43,12 +43,12 @@ export const MovieCard = ({ movie, onClick }) => {
                 <Card.Title className='movieTitle'>
                     {movie.title}
                 </Card.Title>
-                <RippleButton className="favouriteButton" onClick={(e) => {
+                {user && <RippleButton className="favouriteButton" onClick={(e) => {
                     e.stopPropagation();
                     patchFavourites();
                 }} rippleColor={(() => getComputedStyle(document.documentElement).getPropertyValue('--bs-yellow').trim())()}>
                     <i className={`bi bi-star${isFavourite ? '-fill' : ''}`}></i>
-                </RippleButton>
+                </RippleButton>}
                 <Card.Text>{movie.description}</Card.Text>
             </Card.Body>
         </Card>
