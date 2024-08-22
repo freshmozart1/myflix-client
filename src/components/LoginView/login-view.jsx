@@ -14,7 +14,7 @@ export const LoginView = () => {
         navigate = useNavigate(),
         handleSubmit = (event) => {
             event.preventDefault();
-            fetch(`https://oles-myflix-810b16f7a5af.herokuapp.com/login?username=${username}&password=${password}`, {
+            fetch(`${process.env.HEROKU}/login?username=${username}&password=${password}`, {
                 method: 'POST'
             }).then(res => {
                 if (res.ok) {
