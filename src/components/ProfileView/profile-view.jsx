@@ -1,9 +1,10 @@
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../AuthProvider/auth-provider";
 import { Col, Row } from 'react-bootstrap';
+import { MovieList } from '../MovieList/movie-list';
 
 export const ProfileView = () => {
     const { user, token, setUser, setToken } = useContext(AuthContext);
@@ -11,6 +12,7 @@ export const ProfileView = () => {
     const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
     const [newEmail, setNewEmail] = useState({ value: user.email, valid: false, errorMessage: '' });
     const [newBirthday, setNewBirthday] = useState({ value: user.birthday, valid: false, errorMessage: '' });
+    const [favourites, setFavourites] = useState(null);
     
     const validateUsername = async (username) => {
         if ((!username) || (username === user.username)) return setNewUsername({ value: user.username, valid: false, errorMessage: '' });
@@ -85,6 +87,18 @@ export const ProfileView = () => {
             throw new Error('response: ' + (await _response.text()));
         }
     };
+
+    const fetchFavourites = () => {
+        if (user.favourites) {
+            fetch(process.env.HEROKU + '/movies').then(response => response.json()).then(movies => {
+                setFavourites(movies.filter(movie => user.favourites.includes(movie._id)));
+            });
+        } else {
+            setFavourites(null);
+        }
+    };
+
+    useEffect(() => fetchFavourites(), [user.favourites]);
 
     return (
         <Container>
@@ -195,6 +209,21 @@ export const ProfileView = () => {
                         </Form.Group>
                     </Form>
                 </Col>
+            </Row>
+            <Row>
+                <Col xs="12">
+                    <h3>Favourites</h3>
+                </Col>
+                {
+                    favourites ?
+                        <Col>
+                            <MovieList movies={favourites} />
+                        </Col>
+                        :
+                        <Col>
+                            <p>No favourites</p>
+                        </Col>
+                }
             </Row>
         </Container>
     );

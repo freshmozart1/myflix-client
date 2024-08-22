@@ -13,7 +13,7 @@ export const MovieView = () => {
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
-        fetch(`https://oles-myflix-810b16f7a5af.herokuapp.com/movies/${title}`)
+        fetch(`${process.env.HEROKU}/movies/${title}`)
             .then((response) => response.json())
             .then((data) => setMovie(data))
             .catch((error) => console.error(error));

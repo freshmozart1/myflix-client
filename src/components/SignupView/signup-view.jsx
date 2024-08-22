@@ -14,7 +14,7 @@ export const SignupView = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://oles-myflix-810b16f7a5af.herokuapp.com/users', {
+        fetch(process.env.HEROKU + '/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export const SignupView = () => {
             body: JSON.stringify({ username, password, email, birthday })
         }).then(signupResponse => {
             if (signupResponse.ok) {
-                fetch(`https://oles-myflix-810b16f7a5af.herokuapp.com/login?username=${username}&password=${password}`, { //This is redundant code. I will refactor it later.
+                fetch(`${process.env.HEROKU}/login?username=${username}&password=${password}`, {
                     method: 'POST'
                 }).then(loginResponse => {
                     if (loginResponse.ok) {

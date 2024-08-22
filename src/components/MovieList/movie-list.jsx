@@ -11,10 +11,12 @@ export const MovieList = (props) => {
 
     useEffect(() => {
         if (!props.movies) {
-            fetch('https://oles-myflix-810b16f7a5af.herokuapp.com/movies')
+            fetch(process.env.HEROKU + '/movies')
                 .then((response) => response.json())
                 .then((data) => setMovies(data))
                 .catch((error) => console.error(error));
+        } else {
+            setMovies(props.movies);
         }
     }, [props.movies]);
 
@@ -23,7 +25,7 @@ export const MovieList = (props) => {
             <Spinner animation="border" role="status" aria-label='Loading movie' />
         </Container>
     ) : (
-        <Row className='justify-content-center'>
+        <Row>
             {movies.map((movie) => (
                 <Col key={movie._id} xs={12} md={6} lg={4} xl={3} className='g-md-4 d-flex align-items-stretch'>
                     <MovieCard movie={movie} onClick={() => navigate(`/movies/${movie.title}`)} />
