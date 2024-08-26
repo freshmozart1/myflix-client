@@ -13,27 +13,36 @@ export const MovieCard = ({ movie, onClick }) => {
     });
     const patchFavourites = () => {
         if (isFavourite) {
-            user.favourites = user.favourites.filter(favourite => favourite !== movie._id);
-            if (user.favourites.length === 0) user.favourites = null;
+            fetch(process.env.HEROKU + 'users/' + user.username + '/favourites/' + movie._id, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(response => {
+                if (response.ok) {
+                    response.json().then(favourites => {
+                        setUser({ ...user, favourites });
+                        setIsFavourite(false);
+                    });
+                }
+            }).catch(error => console.error(error));
         } else {
-            if (!user.favourites) user.favourites = [];
-            user.favourites.push(movie._id);
+            fetch(process.env.HEROKU + 'users/' + user.username + '/favourites/' + movie._id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(response => {
+                if (response.ok) {
+                    response.json().then(favourites => {
+                        setUser({ ...user, favourites });
+                        setIsFavourite(true);
+                    });
+                }
+            }).catch(error => console.error(error));
         }
-        fetch(process.env.HEROKU + '/users/' + user.username, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ favourites: user.favourites })
-        }).then(respone => {
-            if (respone.ok) {
-                setUser(user);
-                setIsFavourite(!isFavourite);
-            } else {
-                console.error('Failed to patch favourites: ' + respone.status);
-            }
-        });
     }
     return (
         <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
