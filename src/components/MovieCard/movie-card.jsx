@@ -13,7 +13,7 @@ export const MovieCard = ({ movie, onClick }) => {
     });
     const patchFavourites = () => {
         if (isFavourite) {
-            fetch(process.env.HEROKU + 'users/' + user.username + '/favourites/' + movie._id, {
+            fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
@@ -28,7 +28,7 @@ export const MovieCard = ({ movie, onClick }) => {
                 }
             }).catch(error => console.error(error));
         } else {
-            fetch(process.env.HEROKU + 'users/' + user.username + '/favourites/' + movie._id, {
+            fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
