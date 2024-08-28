@@ -209,7 +209,7 @@ export const ProfileView = () => {
                                     type="text"
                                     onFocus={(event) => event.target.type = 'date'}
                                     onBlur={(event) => event.target.type = 'text'}
-                                    placeholder={(new Date(user.birthday)).toLocaleDateString()}
+                                    placeholder={user.birthday ? (new Date(user.birthday)).toLocaleDateString() : 'enter birthday'}
                                     onChange={(event) => validateBirthday(event.target.value)}
                                     isValid={newBirthday.valid}
                                 />
