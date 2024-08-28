@@ -10,14 +10,15 @@ export const MovieList = (props) => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        if (!props.movies) {
-            fetch(process.env.HEROKU + '/movies')
-                .then((response) => response.json())
-                .then((data) => setMovies(data))
-                .catch((error) => console.error(error));
-        } else {
-            setMovies(props.movies);
-        }
+        fetch(process.env.HEROKU + '/movies')
+            .then((response) => response.json())
+            .then((data) => {
+                if (props.movies) {
+                    data = data.filter((movie) => props.movies.includes(movie._id));
+                }
+                return setMovies(data);
+            })
+            .catch((error) => console.error(error));
     }, [props.movies]);
 
     return movies.length === 0 ? (

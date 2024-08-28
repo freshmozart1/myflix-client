@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from "../AuthProvider/auth-provider";
 import { Col, Row } from 'react-bootstrap';
 import { MovieList } from '../MovieList/movie-list';
@@ -16,7 +16,7 @@ export const ProfileView = () => {
     const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
     const [newEmail, setNewEmail] = useState({ value: user.email, valid: false, errorMessage: '' });
     const [newBirthday, setNewBirthday] = useState({ value: user.birthday, valid: false, errorMessage: '' });
-    const [favourites, setFavourites] = useState(null);
+    //const [favourites, setFavourites] = useState(null);
     
     const validateUsername = async (username) => {
         if ((!username) || (username === user.username)) return setNewUsername({ value: user.username, valid: false, errorMessage: '' });
@@ -59,40 +59,25 @@ export const ProfileView = () => {
         return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(birthday) ? setNewBirthday({ value: birthday, valid: true, errorMessage: '' }) : setNewBirthday({ value: birthday, valid: false, errorMessage: 'Invalid date.' });
     };
     const patchField = async (field, value) => {
-        const _response = await fetch(process.env.HEROKU + '/users/' + user.username, {
+        fetch(`${process.env.HEROKU}/users/${user.username}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ [field]: value })
-        });
-        if (_response.status === 200) {
-            if (field === 'password') {
-                fetch(`${process.env.HEROKU}/login?username=${user.username}&password=${value}`, {
-                    method: 'POST'
-                }).then(res => {
-                    if (res.ok) {
-                        res.json().then(res_ok => {
-                            setUser(res_ok.user);
-                            setToken(res_ok.token);
-                        }).catch(e => console.error('Couldn\'t convert response to JSON: ' + e));
-                    } else {
-                        res.json().then(res_error => {
-                            console.error('Error logging in: ' + res_error.message);
-                        });
-                    }
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(newUser => {
+                    setUser(newUser);
                 });
             } else {
-                user[field] = value;
-                setUser(user);
+                response.text().then(error => console.error(`Error updating user: ${response.statusText}: ${error}`));
             }
-        } else {
-            throw new Error('response: ' + (await _response.text()));
-        }
+        });
     };
 
-    const fetchFavourites = () => {
+   /*const fetchFavourites = () => {
         if (user.favourites) {
             fetch(process.env.HEROKU + '/movies').then(response => response.json()).then(movies => {
                 setFavourites(movies.filter(movie => user.favourites.includes(movie._id)));
@@ -100,7 +85,7 @@ export const ProfileView = () => {
         } else {
             setFavourites(null);
         }
-    };
+    };*/
 
     const deleteUser = () => {
         fetch(`${process.env.HEROKU}/users/${user.username}`, {
@@ -122,7 +107,7 @@ export const ProfileView = () => {
         });
     };
 
-    useEffect(() => fetchFavourites(), [user.favourites]);
+    //useEffect(() => fetchFavourites(), [user.favourites]);
 
     return (
         <Container>
@@ -221,8 +206,10 @@ export const ProfileView = () => {
                             <Form.Label as={Col} xs="1">Birthday</Form.Label>
                             <Col xs="3">
                                 <Form.Control
-                                    type="date"
-                                    placeholder={user.birthday}
+                                    type="text"
+                                    onFocus={(event) => event.target.type = 'date'}
+                                    onBlur={(event) => event.target.type = 'text'}
+                                    placeholder={user.birthday ? (new Date(user.birthday)).toLocaleDateString() : 'enter birthday'}
                                     onChange={(event) => validateBirthday(event.target.value)}
                                     isValid={newBirthday.valid}
                                 />
@@ -239,9 +226,9 @@ export const ProfileView = () => {
                     <h3>Favourites</h3>
                 </Col>
                 {
-                    favourites ?
+                    user.favourites ?
                         <Col>
-                            <MovieList movies={favourites} />
+                            <MovieList movies={user.favourites} />
                         </Col>
                         :
                         <Col>
