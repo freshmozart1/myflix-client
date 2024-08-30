@@ -1,8 +1,33 @@
 @import '~bootstrap/scss/bootstrap';
+@import '../../../node_modules/bootstrap/scss/functions';
+@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../../node_modules/bootstrap/scss/mixins';
+
+:root {
+    --addNewMovieButtonSize: 50px;
+}
 
 div.loading_container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.addNewMovieButton {
+    all: unset;
+    position: absolute;
+    top: calc(50% - var(--addNewMovieButtonSize) / 2);
+    right: calc(50% - var(--addNewMovieButtonSize) / 2);
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: $primary;
+    border: 1px solid $primary;
+    z-index: 1;
+    overflow: hidden;
 }
