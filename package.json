@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "rm -rf ./dist ./.parcel-cache && mkdir ./dist && cp -R ./img ./dist/img && parcel ./src/index.html"
+    "start": "rm -rf ./dist ./.parcel-cache && mkdir ./dist && parcel ./src/index.html"
   },
   "author": "freshmozart",
   "license": "ISC",

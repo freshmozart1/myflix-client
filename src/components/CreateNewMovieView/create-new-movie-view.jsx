@@ -61,6 +61,9 @@ export default function NewMovieView() {
 
     const imageRef = useRef();
     const [image, setImage] = useState();
+    const [imageUploadValid, setImageUploadValid] = useState(false);
+    const [imageUploadTouched, setImageUploadTouched] = useState(false);
+    const [imageUploadError, setImageUploadError] = useState('');
     const [cropParams, setCropParams] = useState({ unit: 'px', x: 0, y: 0, width: 286, height: 180, aspect: 286 / 180 });
     const [thumbnail, setThumbnail] = useState();
 
@@ -387,14 +390,29 @@ export default function NewMovieView() {
                         <Form.Group controlId="poster">
                             <Form.Label>Poster</Form.Label>
                             <Form.Control type="file" accept="image/*" onChange={(e) => { //TODO: #15 image must be at least 286x180
+                                setImageUploadTouched(true);
                                 const reader = new FileReader();
                                 reader.onloadend = () => {
-                                    setImage(reader.result);
+                                    const img = new Image();
+                                    img.onload = () => {
+                                        if (img.width < 286 || img.height < 180) {
+                                            setImage(null);
+                                            setImageUploadValid(false);
+                                            setImageUploadError('Image must be at least 286x180 pixels.');
+                                            return;
+                                        } else {
+                                            setImageUploadValid(true);
+                                            setImageUploadError('');
+                                            setImage(reader.result);
+                                        }
+                                    };
+                                    img.src = reader.result;
                                 };
                                 if (e.target.files[0]) {
                                     reader.readAsDataURL(e.target.files[0]);
                                 }
-                            }} />
+                            }} isValid={imageUploadTouched && imageUploadValid} isInvalid={imageUploadTouched && !imageUploadValid} />
+                            <Form.Control.Feedback type='invalid'>{imageUploadError}</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
