@@ -1,0 +1,14 @@
+.scroll-list {
+    max-height: 204px;
+    overflow-y: scroll;
+    border: 1px solid rgb(222, 226, 230);
+    border-radius: 6px;
+    &::-webkit-scrollbar {
+        width: 12px; /* Breite des Scrollbalkens */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3); /* Farbe des Scrollbalkens */
+        border-radius: 10px; /* Abgerundete Ecken */
+    }
+}
