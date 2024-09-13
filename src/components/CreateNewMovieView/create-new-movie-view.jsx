@@ -439,11 +439,6 @@ export default function NewMovieView() {
                         </Form.Group>
                     </Col>
                 </Row>}
-                {thumbnail && <Row className="gy-1">
-                    <Col xs={12}>
-                        <img src={thumbnail} alt="Thumbnail" />
-                    </Col>
-                </Row>}
             </Col>
         </Row>
         <Row className='gy-1'>
