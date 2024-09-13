@@ -11,6 +11,7 @@ import { ProfileView } from "./components/ProfileView/profile-view";
 import './index.scss';
 import { LoginView } from "./components/LoginView/login-view";
 import { AuthProvider } from "./components/AuthProvider/auth-provider";
+import NewMovieView from "./components/CreateNewMovieView/create-new-movie-view";
 
 const router = createBrowserRouter([
     {
@@ -21,7 +22,8 @@ const router = createBrowserRouter([
             { path: 'movies/:title', element: <MovieView /> },
             { path: 'login', element: <LoginView /> },
             { path: 'signup', element: <SignupView /> },
-            { path: 'users/:username', element: <ProfileView /> } //:username is not used in ProfileView
+            { path: 'users/:username', element: <ProfileView /> }, //:username is not used in ProfileView
+            { path: 'newmovie', element: <NewMovieView />}
         ]
     }
 ]);

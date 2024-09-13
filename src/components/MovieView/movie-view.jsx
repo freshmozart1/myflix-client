@@ -45,7 +45,7 @@ export const MovieView = () => {
                     </Row>
                 </Col>
                 <Col xs={12} md={6}>
-                    <img src={movie.imagePath} alt="Movie poster" />
+                    <img className='poster' src={movie.imagePath ? process.env.HEROKU + '/' + movie.imagePath : process.env.HEROKU + '/placeholders/movie_set.webp'} alt="Movie poster" />
                 </Col>
             </Row >
         </Container >

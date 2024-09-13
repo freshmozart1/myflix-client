@@ -46,7 +46,7 @@ export const MovieCard = ({ movie, onClick }) => {
     }
     return (
         <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
-            <Card.Img className="z-0 position-relative" variant="top" src={movie.imagePath} />
+            <Card.Img className="z-0 position-relative" variant="top" src={movie.thumbnailPath ? process.env.HEROKU + '/' + movie.thumbnailPath : process.env.HEROKU + '/placeholders/movie_set_cropped.webp'} />
             <Card.Body className="z-0 position-relative">
                 <div style={{float: 'right', width: '50px', height: '9px'}}/>
                 <Card.Title className='movieTitle'>
@@ -84,6 +84,7 @@ MovieCard.propTypes = {
             __v: PropTypes.number.isRequired
         }),
         imagePath: PropTypes.string,
+        thumbnailPath: PropTypes.string,
         __v: PropTypes.number.isRequired
     }).isRequired,
     onClick: PropTypes.func.isRequired
