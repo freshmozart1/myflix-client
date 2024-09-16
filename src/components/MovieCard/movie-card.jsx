@@ -6,14 +6,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthProvider/auth-provider';
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
-const s3 = new S3Client({
-    region: process.env.S3_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    },
-});
-
 export const MovieCard = ({ movie, onClick }) => {
     const { user, token, setUser } = useContext(AuthContext);
     const [isFavourite, setIsFavourite] = useState(() => {
@@ -28,6 +20,13 @@ export const MovieCard = ({ movie, onClick }) => {
         if (!movie.thumbnailPath) return;
         (async () => {
             try {
+                const s3 = new S3Client({
+                    region: process.env.S3_REGION,
+                    credentials: {
+                        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+                    },
+                });
                 const thumbnailResponse = await s3.send(new GetObjectCommand({
                     Bucket: process.env.S3_BUCKET,
                     Key: movie.thumbnailPath
@@ -39,6 +38,7 @@ export const MovieCard = ({ movie, onClick }) => {
                     thumbnailChunks.push(value);
                 }
                 setThumbnail(URL.createObjectURL(new Blob(thumbnailChunks)));
+                s3.destroy();
             } catch (error) {
                 console.error(error);
             }
