@@ -2,8 +2,17 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import './movie-card.scss';
 import { RippleButton } from '../RippleButton/ripple-button';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthProvider/auth-provider';
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+    region: process.env.S3_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    },
+});
 
 export const MovieCard = ({ movie, onClick }) => {
     const { user, token, setUser } = useContext(AuthContext);
@@ -11,6 +20,31 @@ export const MovieCard = ({ movie, onClick }) => {
         if (user && user.favourites) return user.favourites.includes(movie._id);
         return false;
     });
+    const [thumbnail, setThumbnail] = useState(() => {
+        return process.env.HEROKU + '/placeholders/movie_set_cropped.webp';
+    });
+
+    useEffect(() => {
+        if (!movie.thumbnailPath) return;
+        (async () => {
+            try {
+                const thumbnailResponse = await s3.send(new GetObjectCommand({
+                    Bucket: process.env.S3_BUCKET,
+                    Key: movie.thumbnailPath
+                }));
+                const thumbnailReader = thumbnailResponse.Body.getReader();
+                const thumbnailChunks = [];
+                let done, value;
+                while ({ done, value } = await thumbnailReader.read(), !done) {
+                    thumbnailChunks.push(value);
+                }
+                setThumbnail(URL.createObjectURL(new Blob(thumbnailChunks)));
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, [movie.thumbnailPath]);
+
     const patchFavourites = () => {
         if (isFavourite) {
             fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
@@ -46,7 +80,7 @@ export const MovieCard = ({ movie, onClick }) => {
     }
     return (
         <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
-            <Card.Img className="z-0 position-relative" variant="top" src={movie.thumbnailPath ? process.env.HEROKU + '/' + movie.thumbnailPath : process.env.HEROKU + '/placeholders/movie_set_cropped.webp'} />
+            <Card.Img className="z-0 position-relative" variant="top" src={thumbnail} />
             <Card.Body className="z-0 position-relative">
                 <div style={{float: 'right', width: '50px', height: '9px'}}/>
                 <Card.Title className='movieTitle'>
