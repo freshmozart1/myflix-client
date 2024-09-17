@@ -107,7 +107,7 @@ MovieCard.propTypes = {
             _id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             description: PropTypes.string.isRequired,
-            __v: PropTypes.number.isRequired
+            __v: PropTypes.number
         }),
         director: PropTypes.exact({
             _id: PropTypes.string.isRequired,
@@ -115,11 +115,11 @@ MovieCard.propTypes = {
             birthday: PropTypes.string.isRequired,
             deathday: PropTypes.string,
             biography: PropTypes.string.isRequired,
-            __v: PropTypes.number.isRequired
+            __v: PropTypes.number
         }),
         imagePath: PropTypes.string,
         thumbnailPath: PropTypes.string,
-        __v: PropTypes.number.isRequired
+        __v: PropTypes.number
     }).isRequired,
     onClick: PropTypes.func.isRequired
 };
