@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from "../AuthProvider/auth-provider";
 import { Col, Row } from 'react-bootstrap';
 import { MovieList } from '../MovieList/movie-list';
@@ -16,8 +16,16 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
     const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
     const [newEmail, setNewEmail] = useState({ value: user.email, valid: false, errorMessage: '' });
     const [newBirthday, setNewBirthday] = useState({ value: user.birthday, valid: false, errorMessage: '' });
-    //const [favourites, setFavourites] = useState(null);
+    const [favourites, setFavourites] = useState([]);
     
+    useEffect(() => {
+        if (!user.username) return;
+        fetch(process.env.HEROKU + '/users/' + user.username + '/favourites').then(response => {
+            if (response.ok) return response.json();
+            response.text().then(text => {Promise.reject({status: response.status, message: text})});
+        }).then(_favourites => setFavourites(_favourites)).catch(error => console.error(error));
+    }, [user.username]);
+
     const validateUsername = async (username) => {
         if ((!username) || (username === user.username)) return setNewUsername({ value: user.username, valid: false, errorMessage: '' });
         if (!(new RegExp(`^[a-zA-Z0-9]{${process.env.USERNAME_LENGTH},}$`)).test(username)) {
@@ -77,16 +85,6 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
         });
     };
 
-   /*const fetchFavourites = () => {
-        if (user.favourites) {
-            fetch(process.env.HEROKU + '/movies').then(response => response.json()).then(movies => {
-                setFavourites(movies.filter(movie => user.favourites.includes(movie._id)));
-            });
-        } else {
-            setFavourites(null);
-        }
-    };*/
-
     const deleteUser = () => {
         fetch(`${process.env.HEROKU}/users/${user.username}`, {
             method: 'DELETE',
@@ -106,8 +104,6 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
             }
         });
     };
-
-    //useEffect(() => fetchFavourites(), [user.favourites]);
 
     return (
         <Container>
@@ -226,14 +222,14 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
                     <h3>Favourites</h3>
                 </Col>
                 {
-                    user.favourites ?
-                        <Col>
-                            <MovieList movies={user.favourites} />
-                        </Col>
+                    favourites && favourites.length > 0 ?
+                        (<Col>
+                            <MovieList movies={favourites} />
+                        </Col>)
                         :
-                        <Col>
+                        (<Col>
                             <p>No favourites</p>
-                        </Col>
+                        </Col>)
                 }
             </Row>
             <Row>
