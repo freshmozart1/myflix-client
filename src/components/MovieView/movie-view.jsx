@@ -6,18 +6,53 @@ import { useEffect, useState } from 'react';
 
 import './movie-view.scss';
 import { Spinner, Container } from 'react-bootstrap';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 export const MovieView = () => {
     const title = Object.values(useParams())[0];
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
+    const [poster, setPoster] = useState(() => {
+        return process.env.HEROKU + '/placeholders/movie_set.webp';
+    });
 
     useEffect(() => {
-        fetch(`${process.env.HEROKU}/movies/${title}`)
-            .then((response) => response.json())
-            .then((data) => setMovie(data))
-            .catch((error) => console.error(error));
-    });
+        if (title) {
+            fetch(`${process.env.HEROKU}/movies/${title}`)
+                .then((response) => response.json())
+                .then((data) => setMovie(data))
+                .catch((error) => console.error(error));
+        }
+    }, [title]);
+
+    useEffect(() => {
+        if (!movie || !movie.imagePath) return;
+        (async () => {
+            try {
+                const s3 = new S3Client({
+                    region: process.env.S3_REGION,
+                    credentials: {
+                        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+                    }
+                });
+                const posterResponse = await s3.send(new GetObjectCommand({
+                    Bucket: process.env.S3_BUCKET,
+                    Key: movie.imagePath
+                }));
+                const posterReader = posterResponse.Body.getReader();
+                const posterChunks = [];
+                let done, value;
+                while ({ done, value } = await posterReader.read(), !done) {
+                    posterChunks.push(value);
+                }
+                setPoster(URL.createObjectURL(new Blob(posterChunks)));
+                s3.destroy();
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, [movie]);
 
     return movie ? (
         <Container>
@@ -45,7 +80,7 @@ export const MovieView = () => {
                     </Row>
                 </Col>
                 <Col xs={12} md={6}>
-                    <img className='poster' src={movie.imagePath ? process.env.HEROKU + '/' + movie.imagePath : process.env.HEROKU + '/placeholders/movie_set.webp'} alt="Movie poster" />
+                    <img className='poster' src={poster} alt="Movie poster" />
                 </Col>
             </Row >
         </Container >
