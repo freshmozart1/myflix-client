@@ -46,38 +46,22 @@ export const MovieCard = ({ movie, onClick }) => {
     }, [movie.thumbnailPath]);
 
     const patchFavourites = () => {
-        if (isFavourite) {
-            fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(response => {
-                if (response.ok) {
-                    response.json().then(favourites => {
-                        setUser({ ...user, favourites });
-                        setIsFavourite(false);
-                    });
-                }
-            }).catch(error => console.error(error));
-        } else {
-            fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then(response => {
-                if (response.ok) {
-                    response.json().then(favourites => {
-                        setUser({ ...user, favourites });
-                        setIsFavourite(true);
-                    });
-                }
-            }).catch(error => console.error(error));
-        }
+        fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
+            method: isFavourite ? 'DELETE' : 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(favourites => {
+                    setUser({ ...user, favourites });
+                    setIsFavourite(!isFavourite);
+                });
+            }
+        }).catch(error => console.error(error));
     }
+    
     return (
         <Card className="z-0 position-relative" style={{cursor: 'pointer'}} onClick={onClick}>
             <Card.Img className="z-0 position-relative" variant="top" src={thumbnail} />
