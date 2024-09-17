@@ -17,11 +17,13 @@ export const MovieView = () => {
     });
 
     useEffect(() => {
-        fetch(`${process.env.HEROKU}/movies/${title}`)
-            .then((response) => response.json())
-            .then((data) => setMovie(data))
-            .catch((error) => console.error(error));
-    });
+        if (title) {
+            fetch(`${process.env.HEROKU}/movies/${title}`)
+                .then((response) => response.json())
+                .then((data) => setMovie(data))
+                .catch((error) => console.error(error));
+        }
+    }, [title]);
 
     useEffect(() => {
         if (!movie || !movie.imagePath) return;
