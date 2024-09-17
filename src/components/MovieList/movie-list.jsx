@@ -26,8 +26,9 @@ export const MovieList = (props) => {
                     return setMovies(data);
                 })
                 .catch((error) => {
+                    setLoading(false);
                     if (error.status === 404) return setMovies([]);
-                    console.error('Here: ', error.status);
+                    console.error(error.status);
                 });
         } else {
             setMovies(props.movies);
