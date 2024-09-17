@@ -85,16 +85,6 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
         });
     };
 
-   /*const fetchFavourites = () => {
-        if (user.favourites) {
-            fetch(process.env.HEROKU + '/movies').then(response => response.json()).then(movies => {
-                setFavourites(movies.filter(movie => user.favourites.includes(movie._id)));
-            });
-        } else {
-            setFavourites(null);
-        }
-    };*/
-
     const deleteUser = () => {
         fetch(`${process.env.HEROKU}/users/${user.username}`, {
             method: 'DELETE',
@@ -114,8 +104,6 @@ export const ProfileView = () => { //TODO: #19 This component should use the RES
             }
         });
     };
-
-    //useEffect(() => fetchFavourites(), [user.favourites]);
 
     return (
         <Container>
