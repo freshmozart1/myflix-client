@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <MainView />,
         children: [
-            { index: true, element: <MovieList /> },
+            { index: true, element: <MovieList showNewMovie={true} /> },
             { path: 'movies/:title', element: <MovieView /> },
             { path: 'login', element: <LoginView /> },
             { path: 'signup', element: <SignupView /> },
