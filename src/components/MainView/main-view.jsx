@@ -6,6 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './main-view.scss';
 
 
 export const MainView = () => {

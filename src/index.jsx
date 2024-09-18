@@ -8,7 +8,6 @@ import { MovieView } from "./components/MovieView/movie-view";
 import { SignupView } from "./components/SignupView/signup-view";
 import { ProfileView } from "./components/ProfileView/profile-view";
 
-import './index.scss';
 import { LoginView } from "./components/LoginView/login-view";
 import { AuthProvider } from "./components/AuthProvider/auth-provider";
 import NewMovieView from "./components/CreateNewMovieView/create-new-movie-view";

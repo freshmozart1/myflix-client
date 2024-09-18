@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../AuthProvider/auth-provider";
+import './signup-view.scss';
 
 export const SignupView = () => { 
     const [username, setUsername] = useState('');
