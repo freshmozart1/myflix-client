@@ -9,7 +9,7 @@ import './profile-view.scss';
 
 export const ProfileView = () => {
     const { user, token, setUser, setToken } = useContext(AuthContext);
-    if (!user || !token) {
+    if (!user || !token) { // TODO: #31 useNavigate() to redirect to login page
         window.location.href = '/';
         return;
     }
