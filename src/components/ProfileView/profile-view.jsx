@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../AuthProvider/auth-provider";
 import { Col, Row } from 'react-bootstrap';
 import { MovieList } from '../MovieList/movie-list';
@@ -9,23 +10,25 @@ import './profile-view.scss';
 
 export const ProfileView = () => {
     const { user, token, setUser, setToken } = useContext(AuthContext);
-    if (!user || !token) { // TODO: #31 useNavigate() to redirect to login page
-        window.location.href = '/';
-        return;
-    }
-    const [newUsername, setNewUsername] = useState({ value: user.username, valid: false, errorMessage: '' });
-    const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
-    const [newEmail, setNewEmail] = useState({ value: user.email, valid: false, errorMessage: '' });
-    const [newBirthday, setNewBirthday] = useState({ value: user.birthday, valid: false, errorMessage: '' });
-    const [favourites, setFavourites] = useState([]);
-    
+    const navigate = useNavigate();
     useEffect(() => {
-        if (!user.username) return;
+        if (!user || !token) navigate('/');
+    });
+
+    const [newUsername, setNewUsername] = useState({ value: user?.username, valid: false, errorMessage: '' });
+    const [newPassword, setNewPassword] = useState({ value: '', valid: false, errorMessage: '' });
+    const [newEmail, setNewEmail] = useState({ value: user?.email, valid: false, errorMessage: '' });
+    const [newBirthday, setNewBirthday] = useState({ value: user?.birthday, valid: false, errorMessage: '' });
+    const [favourites, setFavourites] = useState([]);
+
+
+    useEffect(() => {
+        if (!user?.username) return;
         fetch(process.env.HEROKU + '/users/' + user.username + '/favourites').then(response => {
             if (response.ok) return response.json();
             response.text().then(text => {Promise.reject({status: response.status, message: text})});
         }).then(_favourites => setFavourites(_favourites)).catch(error => console.error(error));
-    }, [user.username]);
+    }, [user?.username]);
 
     const validateUsername = async (username) => {
         if ((!username) || (username === user.username)) return setNewUsername({ value: user.username, valid: false, errorMessage: '' });
@@ -120,7 +123,7 @@ export const ProfileView = () => {
                             <Col xs="3">
                                 <Form.Control
                                     type="text"
-                                    placeholder={user.username}
+                                    placeholder={user?.username}
                                     onChange={event => validateUsername(event.target.value)}
                                     isValid={newUsername.valid}
                                 />
@@ -177,7 +180,7 @@ export const ProfileView = () => {
                             <Col xs="3">
                                 <Form.Control
                                     type="email"
-                                    placeholder={user.email}
+                                    placeholder={user?.email}
                                     onChange={(event) => validateEmail(event.target.value)}
                                     isValid={newEmail.valid}
                                 />
@@ -206,7 +209,7 @@ export const ProfileView = () => {
                                     type="text"
                                     onFocus={(event) => event.target.type = 'date'}
                                     onBlur={(event) => event.target.type = 'text'}
-                                    placeholder={user.birthday ? (new Date(user.birthday)).toLocaleDateString() : 'enter birthday'}
+                                    placeholder={user?.birthday ? (new Date(user.birthday)).toLocaleDateString() : 'enter birthday'}
                                     onChange={(event) => validateBirthday(event.target.value)}
                                     isValid={newBirthday.valid}
                                 />
