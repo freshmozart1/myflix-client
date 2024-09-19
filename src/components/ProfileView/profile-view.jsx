@@ -7,9 +7,9 @@ import { Col, Row } from 'react-bootstrap';
 import { MovieList } from '../MovieList/movie-list';
 import './profile-view.scss';
 
-export const ProfileView = () => { //TODO: #19 This component should use the REST APIs favourites route
+export const ProfileView = () => {
     const { user, token, setUser, setToken } = useContext(AuthContext);
-    if (!user || !token) {
+    if (!user || !token) { // TODO: #31 useNavigate() to redirect to login page
         window.location.href = '/';
         return;
     }

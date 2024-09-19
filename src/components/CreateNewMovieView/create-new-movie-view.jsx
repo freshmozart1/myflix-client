@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Col, Form, Row, ListGroup } from "react-bootstrap";
 import { isDate } from "date-fns";
 import { AuthContext } from "../AuthProvider/auth-provider";
@@ -8,7 +9,8 @@ import './create-new-movie-view.scss';
 
 
 export default function NewMovieView() {
-    const {token} = useContext(AuthContext);
+    const { user, token } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [movies, setMovies] = useState([]);
 
@@ -69,6 +71,12 @@ export default function NewMovieView() {
 
     const [formValid, setFormValid] = useState(false);
     const [submit, setSubmit] = useState(false);
+
+    useEffect(() => {
+        if (!user || !token) {
+            navigate('/login')
+        }
+    })
 
     useEffect(() => {
         fetchData(`${process.env.HEROKU}/movies`, setMovies);
