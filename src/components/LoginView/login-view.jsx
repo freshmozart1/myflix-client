@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
@@ -10,7 +10,7 @@ export const LoginView = () => {
     const [username, setUsername] = useState(''),
         [password, setPassword] = useState(''),
         [errorMessage, setErrorMessage] = useState(''),
-        { setToken, setUser } = useContext(AuthContext),
+        { user, token, setToken, setUser } = useContext(AuthContext),
         navigate = useNavigate(),
         handleSubmit = (event) => {
             event.preventDefault();
@@ -21,7 +21,6 @@ export const LoginView = () => {
                     res.json().then(res_ok => {
                         setToken(res_ok.token);
                         setUser(res_ok.user);
-                        navigate('/');
                     })
                         .catch(e => console.error('Couldn\'t convert response to JSON: ' + e));
                 } else {
@@ -33,6 +32,12 @@ export const LoginView = () => {
                 .catch(e => console.error('Error logging in: ' + e));
         };
 
+    useEffect(() => {
+        if (user && token) {
+            navigate('/');
+        }
+    }, [user, token]);
+    
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="login_username">
