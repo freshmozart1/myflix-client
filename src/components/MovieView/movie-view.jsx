@@ -12,9 +12,7 @@ export const MovieView = () => {
     const title = Object.values(useParams())[0];
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
-    const [poster, setPoster] = useState(() => {
-        return process.env.HEROKU + '/placeholders/movie_set.webp';
-    });
+    const [poster, setPoster] = useState(null);
 
     useEffect(() => {
         if (title) {
