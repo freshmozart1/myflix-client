@@ -250,7 +250,7 @@ export default function NewMovieView() {
                             <Form.Label>Title</Form.Label>
                             <Form.Control type='text' value={title} onChange={(e) => {
                                 e.preventDefault();
-                                setTitle(e.target.value.trim());
+                                setTitle(e.target.value);
                                 setTouchedTitle(true);
                             }} isValid={touchedTitle && titleValid} isInvalid={touchedTitle && !titleValid} />
                             <Form.Control.Feedback type='invalid'>{titleError}</Form.Control.Feedback>
@@ -263,7 +263,7 @@ export default function NewMovieView() {
                             <Form.Label>Description</Form.Label>
                             <Form.Control as='textarea' value={description} onChange={(e) => {
                                 e.preventDefault();
-                                setDescription(e.target.value.trim());
+                                setDescription(e.target.value);
                                 setTouchedDescription(true);
                             }} isValid={touchedDescription && descriptionValid} isInvalid={touchedDescription && !descriptionValid} />
                             <Form.Control.Feedback type='invalid'>{descriptionError}</Form.Control.Feedback>
@@ -276,7 +276,7 @@ export default function NewMovieView() {
                             <Form.Label>Genre</Form.Label>
                             <Form.Control type='text' value={genreName} onChange={(e) => {
                                 e.preventDefault();
-                                setGenreName(e.target.value.trim());
+                                setGenreName(e.target.value);
                                 setTouchedGenreName(true);
                                 setTouchedGenreList(false);
                             }} isValid={touchedGenreName && genreNameValid} isInvalid={touchedGenreName && !genreNameValid} />
@@ -312,7 +312,7 @@ export default function NewMovieView() {
                             <Form.Label>Genre description</Form.Label>
                             <Form.Control as='textarea' value={genreDescription} onChange={(e) => {
                                 e.preventDefault();
-                                setGenreDescription(e.target.value.trim());
+                                setGenreDescription(e.target.value);
                                 setTouchedGenreDescription(true);
                             }} isValid={touchedGenreDescription && genreDescriptionValid} isInvalid={touchedGenreDescription && !genreDescriptionValid} />
                             <Form.Control.Feedback type='invalid'>{genreDescriptionError}</Form.Control.Feedback>
@@ -325,7 +325,7 @@ export default function NewMovieView() {
                             <Form.Label>Director</Form.Label>
                             <Form.Control type='text' value={directorName} onChange={(e) => {
                                 e.preventDefault();
-                                setDirectorName(e.target.value.trim());
+                                setDirectorName(e.target.value);
                                 setTouchedDirectorName(true);
                                 setTouchedDirectorList(false);
                             }} isValid={touchedDirectorName && directorNameValid} isInvalid={touchedDirectorName && !directorNameValid} />
@@ -387,7 +387,7 @@ export default function NewMovieView() {
                             <Form.Label>Director biography</Form.Label>
                             <Form.Control as='textarea' value={biography} onChange={(e) => {
                                 e.preventDefault();
-                                setBiography(e.target.value.trim());
+                                setBiography(e.target.value);
                                 setBiographyTouched(true);
                             }} isValid={biographyTouched && biographyValid} isInvalid={biographyTouched && !biographyValid} />
                             <Form.Control.Feedback type='invalid'>{biographyError}</Form.Control.Feedback>
