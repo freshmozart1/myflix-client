@@ -12,9 +12,10 @@ export const MovieCard = ({ movie, onClick }) => {
         if (user && user.favourites) return user.favourites.includes(movie._id);
         return false;
     });
-    const [thumbnail, setThumbnail] = useState(undefined);
+    const [thumbnail, setThumbnail] = useState(null);
 
     useEffect(() => {
+        if (!movie) return;
         (async () => {
             try {
                 const s3 = new S3Client({
@@ -40,7 +41,7 @@ export const MovieCard = ({ movie, onClick }) => {
                 console.error(error);
             }
         })();
-    }, [movie.thumbnailPath]);
+    }, [movie]);
 
     const patchFavourites = () => {
         fetch(process.env.HEROKU + '/users/' + user.username + '/favourites/' + movie._id, {
