@@ -28,7 +28,7 @@ export const ProfileView = () => {
             if (response.ok) return response.json();
             response.text().then(text => {Promise.reject({status: response.status, message: text})});
         }).then(_favourites => setFavourites(_favourites)).catch(error => console.error(error));
-    }, [user?.username]);
+    }, [user?.username, user?.favourites]);
 
     const validateUsername = async (username) => {
         if ((!username) || (username === user.username)) return setNewUsername({ value: user.username, valid: false, errorMessage: '' });
