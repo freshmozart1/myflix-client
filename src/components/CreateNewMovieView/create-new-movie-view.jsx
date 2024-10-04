@@ -152,7 +152,10 @@ export default function NewMovieView() {
             }).then(response => {
                 if (response.ok) return response.json();
                 throw new Error('Network response was not ok');
-            }).then(newMovie => console.log(newMovie)).catch(e => console.error(e));
+            }).then(newMovie => {
+                console.log(newMovie);
+                navigate('/');
+            }).catch(e => console.error(e));
         }
     }, [submit, directorId, genreId]);
 
@@ -192,7 +195,6 @@ export default function NewMovieView() {
     };
 
     function submitMovie() {
-        setSubmit(true);
         if (genreNameExists) {
             setGenreId(genres.find(g => g.name.toLowerCase() === genreName.toLowerCase())._id);
         } else {
@@ -233,6 +235,7 @@ export default function NewMovieView() {
                 console.error(e);
             });
         }
+        setSubmit(true);
     };
 
     return (<Form onSubmit={(e) => {
