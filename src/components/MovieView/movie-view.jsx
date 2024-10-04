@@ -26,7 +26,7 @@ export const MovieView = () => {
     }, [title]);
 
     useEffect(() => {
-        if (!movie || !movie.imagePath) return;
+        if (!movie) return;
         (async () => {
             try {
                 const s3 = new S3Client({
@@ -38,7 +38,7 @@ export const MovieView = () => {
                 });
                 const posterResponse = await s3.send(new GetObjectCommand({
                     Bucket: process.env.S3_BUCKET,
-                    Key: movie.imagePath
+                    Key: movie.imagePath ? movie.imagePath : 'placeholders/movie_set.webp'
                 }));
                 const posterReader = posterResponse.Body.getReader();
                 const posterChunks = [];
