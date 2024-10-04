@@ -12,12 +12,9 @@ export const MovieCard = ({ movie, onClick }) => {
         if (user && user.favourites) return user.favourites.includes(movie._id);
         return false;
     });
-    const [thumbnail, setThumbnail] = useState(() => {
-        return process.env.HEROKU + '/placeholders/movie_set_cropped.webp';
-    });
+    const [thumbnail, setThumbnail] = useState(undefined);
 
     useEffect(() => {
-        if (!movie.thumbnailPath) return;
         (async () => {
             try {
                 const s3 = new S3Client({
@@ -29,7 +26,7 @@ export const MovieCard = ({ movie, onClick }) => {
                 });
                 const thumbnailResponse = await s3.send(new GetObjectCommand({
                     Bucket: process.env.S3_BUCKET,
-                    Key: movie.thumbnailPath
+                    Key: movie.thumbnailPath ? movie.thumbnailPath : 'placeholders/movie_set_cropped.png'
                 }));
                 const thumbnailReader = thumbnailResponse.Body.getReader();
                 const thumbnailChunks = [];
