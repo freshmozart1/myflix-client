@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Row, Col, Container, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
@@ -12,6 +12,8 @@ export const MovieList = (props) => {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchParams] = useSearchParams();
+    const searchFilter = searchParams.get('search') || '';
 
     useEffect(() => {
         if (!props.movies) {
@@ -23,7 +25,8 @@ export const MovieList = (props) => {
                 })
                 .then((data) => {
                     setLoading(false);
-                    return setMovies(data);
+                    const filteredMovies = searchFilter.length > 0 ? data.filter((movie) => movie.title.toLowerCase().includes(searchFilter.toLowerCase())) : data;
+                    return setMovies(filteredMovies);
                 })
                 .catch((error) => {
                     setLoading(false);
@@ -34,7 +37,7 @@ export const MovieList = (props) => {
             setMovies(props.movies);
             setLoading(false);
         }
-    }, [props.movies]);
+    }, [props.movies, searchFilter]);
 
     return (
         loading ? (
@@ -45,7 +48,7 @@ export const MovieList = (props) => {
             <Row>
                 {
                     props.showNewMovie && <Col xs="12" md="6" lg="4" xl="3" className="g-md-4 d-flex align-items-stretch">
-                        <Card style={{ position: 'relative', width: '100%', borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim() }}>
+                        <Card style={{ minHeight: '442px', position: 'relative', width: '100%', borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim() }}>
                             <Card.Body style={{ position: 'relative' }}>
                                 <RippleButton className="addNewMovieButton" onClick={() => {
                                     setTimeout(() => navigate('/newmovie'), 600);
@@ -75,5 +78,6 @@ export const MovieList = (props) => {
 
 MovieList.propTypes = {
     movies: PropTypes.array,
-    showNewMovie: PropTypes.bool
+    showNewMovie: PropTypes.bool,
+    searchFilter: PropTypes.string
 };

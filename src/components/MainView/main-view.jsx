@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main-view.scss';
+import { SearchInput } from '../SearchInput/search-input';
 
 
 export const MainView = () => {
@@ -40,6 +41,7 @@ export const MainView = () => {
                                         </>
                                     }
                                 </Nav>
+                                <SearchInput />
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>
