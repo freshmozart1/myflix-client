@@ -76,6 +76,7 @@ export const MovieCard = ({ movie, onClick }) => {
                 </RippleButton>}
                 <Card.Text>{movie.description}</Card.Text>
             </Card.Body>
+            <Card.Footer className='text-muted'>{movie.genre.name}</Card.Footer>
         </Card>
     );
 };
