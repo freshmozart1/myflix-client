@@ -1,5 +1,9 @@
-please set these environment variables inside a .env file in the root directory:
+# myFlix React Client
 
- USERNAME_LENGTH = 5
- PASSWORD_LENGTH = 8
- HEROKU='https://oles-myflix-810b16f7a5af.herokuapp.com'
+With this client application for my movie database it is possible to upload information about movies to my myFlix movie database.
+
+# Techstack
+
+React: For the logic of the app
+Bootstrap: For the layout
+Amazon Web Services: For storing movie Posters
