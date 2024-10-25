@@ -4,6 +4,6 @@ With this client application for my movie database it is possible to upload info
 
 # Techstack
 
-React: For the logic of the app
-Bootstrap: For the layout
-Amazon Web Services: For storing movie Posters
+- React: For the logic of the app
+- Bootstrap: For the layout
+- Amazon Web Services: For storing movie Posters
